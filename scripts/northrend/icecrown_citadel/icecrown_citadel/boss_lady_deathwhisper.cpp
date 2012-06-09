@@ -393,24 +393,9 @@ struct MANGOS_DLL_DECL boss_lady_deathwhisperAI : public boss_lady_deathwhisper_
 
     void DoSummonWave()
     {
-        // summoning on all sides
-        if (m_bIs25Man)
-        {
-            // summon 1 fanatic and 2 adherents on right side
-            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[1].x, SpawnLoc[1].y, SpawnLoc[1].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[2].x, SpawnLoc[2].y, SpawnLoc[2].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[3].x, SpawnLoc[3].y, SpawnLoc[3].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-
-            // summon 2 fanatics and 1 adherent on left side
-            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[4].x, SpawnLoc[4].y, SpawnLoc[4].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[5].x, SpawnLoc[5].y, SpawnLoc[5].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[6].x, SpawnLoc[6].y, SpawnLoc[6].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-
-            // summon random on stairs
-            m_creature->SummonCreature(roll_chance_i(50) ? NPC_CULT_FANATIC : NPC_CULT_ADHERENT, SpawnLoc[8].x, SpawnLoc[8].y, SpawnLoc[8].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
-        }
         // summoning on 1 side alternatively
-        else
+        // 10 (N and H) phase 1, 25 H phase 2
+        if ((!m_bIs25Man && m_bIsPhaseOne) || (m_bIs25Man && !m_bIsPhaseOne))
         {
             // left side summoning
             if (m_bIsLeftSideSummon)
@@ -431,6 +416,25 @@ struct MANGOS_DLL_DECL boss_lady_deathwhisperAI : public boss_lady_deathwhisper_
             // change sides for next summoning
             m_bIsLeftSideSummon = !m_bIsLeftSideSummon;
         }
+        // summoning on all sides
+        // 25 (N and H) phase 1
+        else if (m_bIs25Man && m_bIsPhaseOne)
+        {
+            // summon 1 fanatic and 2 adherents on right side
+            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[1].x, SpawnLoc[1].y, SpawnLoc[1].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[2].x, SpawnLoc[2].y, SpawnLoc[2].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[3].x, SpawnLoc[3].y, SpawnLoc[3].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+
+            // summon 2 fanatics and 1 adherent on left side
+            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[4].x, SpawnLoc[4].y, SpawnLoc[4].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+            m_creature->SummonCreature(NPC_CULT_ADHERENT, SpawnLoc[5].x, SpawnLoc[5].y, SpawnLoc[5].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+            m_creature->SummonCreature(NPC_CULT_FANATIC, SpawnLoc[6].x, SpawnLoc[6].y, SpawnLoc[6].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
+        }
+
+        // summon random on stairs
+        // 10 H phase 2, 25 (N and H) phase 1
+        if ((!m_bIs25Man && !m_bIsPhaseOne) || (m_bIs25Man && m_bIsPhaseOne))
+            m_creature->SummonCreature(roll_chance_i(50) ? NPC_CULT_FANATIC : NPC_CULT_ADHERENT, SpawnLoc[8].x, SpawnLoc[8].y, SpawnLoc[8].z, 0.0f, TEMPSUMMON_CORPSE_DESPAWN, 0);
     }
 
     void UpdateFightAI(const uint32 uiDiff)
@@ -481,7 +485,6 @@ struct MANGOS_DLL_DECL boss_lady_deathwhisperAI : public boss_lady_deathwhisper_
                 m_uiDominateMindTimer -= uiDiff;
         }
 
-
          // PHASE ONE
         if (m_bIsPhaseOne)
         {
@@ -507,7 +510,7 @@ struct MANGOS_DLL_DECL boss_lady_deathwhisperAI : public boss_lady_deathwhisper_
             if (m_uiSummonWaveTimer <= uiDiff)
             {
                 DoSummonWave();
-                m_uiSummonWaveTimer = 60000;
+                m_uiSummonWaveTimer = m_bIsHeroic ? 45000 : 60000;
                 DoScriptText(SAY_ANIMATE_DEAD, m_creature);
             }
             else
@@ -533,7 +536,7 @@ struct MANGOS_DLL_DECL boss_lady_deathwhisperAI : public boss_lady_deathwhisper_
                 if (m_uiSummonWaveTimer <= uiDiff)
                 {
                     DoSummonWave();
-                    m_uiSummonWaveTimer = 60000;
+                    m_uiSummonWaveTimer = 45000;
                     DoScriptText(SAY_ANIMATE_DEAD, m_creature);
                 }
                 else
