@@ -167,6 +167,7 @@ struct MANGOS_DLL_DECL boss_razuviousAI : public BSWScriptedAI
         DoMeleeAttackIfReady();
     }
 };
+
 CreatureAI* GetAI_boss_razuvious(Creature* pCreature)
 {
     return new boss_razuviousAI(pCreature);
