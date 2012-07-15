@@ -97,6 +97,7 @@ class MANGOS_DLL_DECL instance_gundrak : public ScriptedInstance
         TypeTimerMap m_mBeamInProgress;
         TypeTimerMap m_mKeyInProgress;
 
+<<<<<<< HEAD
         bool m_bCriteriaSnakesWhySnakesFailed;
 
         GUIDList m_luiStalkerGUIDs;
@@ -104,6 +105,13 @@ class MANGOS_DLL_DECL instance_gundrak : public ScriptedInstance
         GUIDVector m_vStalkerTargetGuids;
         GUIDList m_lEckDwellerGuids;
         GUIDList m_lLivingMojoGuids;
+=======
+        GuidList m_luiStalkerGUIDs;
+        GuidVector m_vStalkerCasterGuids;
+        GuidVector m_vStalkerTargetGuids;
+        GuidList m_lEckDwellerGuids;
+        GuidList m_lLivingMojoGuids;
+>>>>>>> bdb07fcc80468e463bda5b55cf3b193e798b07d3
 };
 
 #endif
