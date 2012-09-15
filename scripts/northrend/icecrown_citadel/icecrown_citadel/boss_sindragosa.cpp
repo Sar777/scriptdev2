@@ -493,14 +493,8 @@ struct MANGOS_DLL_DECL boss_sindragosaAI : public base_icc_bossAI
 
                     // fly to the air point
                     SetCombatMovement(false);
-<<<<<<< HEAD
-                    m_creature->SetLevitate(true);
-                    m_creature->SetByteValue(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND | UNIT_BYTE1_FLAG_UNK_2);
-                    m_creature->GetMotionMaster()->MovePoint(POINT_AIR, SindragosaLoc[1].x, SindragosaLoc[1].y, SindragosaLoc[1].z);
-=======
                     SetLevitate(true);
                     m_creature->GetMotionMaster()->MovePoint(POINT_AIR, SindragosaLoc[1].x, SindragosaLoc[1].y, SindragosaLoc[1].z, false);
->>>>>>> bdb07fcc80468e463bda5b55cf3b193e798b07d3
                 }
                 else
                     m_uiPhaseTimer -= uiDiff;
@@ -561,7 +555,6 @@ struct MANGOS_DLL_DECL boss_sindragosaAI : public base_icc_bossAI
                     if (Unit *pVictim = m_creature->SelectAttackingTarget(ATTACKING_TARGET_RANDOM, 1, SPELL_FROST_BEACON, SELECT_FLAG_PLAYER))
                     {
                         if (DoCastSpellIfCan(pVictim, SPELL_FROST_BEACON) == CAST_OK)
-<<<<<<< HEAD
                         {
                             if (m_uiIcyGripTimer > 9000 && m_uiIcyGripTimer < 17000)
                                 m_uiFrostBeaconTimer = 20000;
@@ -570,9 +563,6 @@ struct MANGOS_DLL_DECL boss_sindragosaAI : public base_icc_bossAI
 
                             m_uiIceTombTimer = 5000;
                         }
-=======
-                            m_uiFrostBeaconTimer = 15000;
->>>>>>> bdb07fcc80468e463bda5b55cf3b193e798b07d3
                     }
                 }
                 else
@@ -582,11 +572,7 @@ struct MANGOS_DLL_DECL boss_sindragosaAI : public base_icc_bossAI
                 if (m_uiIceTombTimer <= uiDiff)
                 {
                     if (DoCastSpellIfCan(m_creature, SPELL_ICE_TOMB) == CAST_OK)
-<<<<<<< HEAD
                         m_uiIceTombTimer = m_uiFrostBeaconTimer + 5000;
-=======
-                        m_uiIceTombTimer = 15000;
->>>>>>> bdb07fcc80468e463bda5b55cf3b193e798b07d3
                 }
                 else
                     m_uiIceTombTimer -= uiDiff;
@@ -992,14 +978,12 @@ struct MANGOS_DLL_DECL mob_spinestalkerAI : public ScriptedAI
 
         if (uiData == POINT_SPINESTALKER_LAND)
         {
-<<<<<<< HEAD
             if (Creature* pSindragosa = pInstance->GetSingleCreatureFromStorage(NPC_SINDRAGOSA))
                 if (pSindragosa->isAlive())
                     return;
 
             if (Creature* pSindr = m_creature->SummonCreature(NPC_SINDRAGOSA, SindragosaLoc[0].x, SindragosaLoc[0].y, SindragosaLoc[0].z, 3.17f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, HOUR*IN_MILLISECONDS, true))
                 pSindr->SetCreatorGuid(ObjectGuid());
-=======
             if (m_creature->getVictim())
             {
                 SetLevitate(false);
@@ -1009,7 +993,6 @@ struct MANGOS_DLL_DECL mob_spinestalkerAI : public ScriptedAI
             }
             else
                 EnterEvadeMode();
->>>>>>> bdb07fcc80468e463bda5b55cf3b193e798b07d3
         }
     }
 
