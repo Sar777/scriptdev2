@@ -17,45 +17,26 @@
 /* ScriptData
 SDName: GO_Scripts
 SD%Complete: 100
-SDComment: Quest support: 5088, 5097, 5098, 5381, 6481, 10990, 10991, 10992, 12557, 14092/14076. Barov_journal->Teaches spell 26089
+SDComment: Quest support: 5097, 5098, 10990, 10991, 10992, 12557, 14092/14076. Barov_journal->Teaches spell 26089
 SDCategory: Game Objects
 EndScriptData */
 
 /* ContentData
-go_cat_figurine (the "trap" version of GO, two different exist)
 go_barov_journal
 go_ethereum_prison
 go_ethereum_stasis
 go_mysterious_snow_mound
-go_resonite_cask
-go_sacred_fire_of_life
 go_shrine_of_the_birds
 go_tele_to_dalaran_crystal
 go_tele_to_violet_stand
 go_andorhal_tower
 go_scourge_enclosure
 go_lab_work_reagents
-go_hand_of_iruxos_crystal
 go_org_portal
 go_sw_portal
 EndContentData */
 
 #include "precompiled.h"
-
-/*######
-## go_cat_figurine
-######*/
-
-enum
-{
-    SPELL_SUMMON_GHOST_SABER    = 5968,
-};
-
-bool GOUse_go_cat_figurine(Player* pPlayer, GameObject* pGo)
-{
-    pPlayer->CastSpell(pPlayer, SPELL_SUMMON_GHOST_SABER, true);
-    return false;
-}
 
 /*######
 ## go_barov_journal
@@ -159,26 +140,6 @@ bool GOUse_go_ethereum_stasis(Player* pPlayer, GameObject* pGo)
 }
 
 /*######
-## go_gilded_brazier
-######*/
-
-enum
-{
-    NPC_STILLBLADE = 17716,
-};
-
-bool GOUse_go_gilded_brazier(Player* pPlayer, GameObject* pGO)
-{
-    if (pGO->GetGoType() == GAMEOBJECT_TYPE_GOOBER)
-    {
-        if (Creature* pCreature = pPlayer->SummonCreature(NPC_STILLBLADE, 8087.632f, -7542.740f, 151.568f, 0.122f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000))
-            pCreature->AI()->AttackStart(pPlayer);
-    }
-
-    return true;
-}
-
-/*######
 ## go_jump_a_tron
 ######*/
 
@@ -260,8 +221,6 @@ bool GOSelect_go_orb_of_command(Player *pPlayer, GameObject* pGo, uint32 sender,
 }
 
 /*######
-=======
->>>>>>> 74ed5b39388bf85ffc092637050fcc35acbeb503
 ## go_resonite_cask
 ######*/
 
@@ -296,6 +255,8 @@ bool GOUse_go_sacred_fire_of_life(Player* pPlayer, GameObject* pGO)
 }
 
 /*######
+=======
+>>>>>>> 2356a5b464f5b2bc1ef25bc9b953a724e03c6eeb
 ## go_shrine_of_the_birds
 ######*/
 
@@ -364,24 +325,6 @@ bool GOUse_go_tele_to_violet_stand(Player* pPlayer, GameObject* pGo)
         return false;
 
     return true;
-}
-
-enum
-{
-    NPC_ZELEMAR_THE_WRATHFULL = 17830,
-    SAY_AGGRO                 = -1000579
-};
-
-float Position[4] = {-327.99f, 221.74f, -20.31f, 3.87f};
-
-bool GOUse_go_blood_filled_orb(Player* pPlayer, GameObject* pGo)
-{
-    if (Creature* pZelemar = pGo->SummonCreature(NPC_ZELEMAR_THE_WRATHFULL, Position[0], Position[1], Position[2], Position[3], TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 30000))
-    {
-        DoScriptText(SAY_AGGRO, pZelemar);
-        pZelemar->AI()->AttackStart(pPlayer);
-    }
-    return false;
 }
 
 /*######
@@ -485,29 +428,6 @@ bool GOUse_go_lab_work_reagents(Player* pPlayer, GameObject* pGo)
     return false;
 }
 
-/*######
-## go_hand_of_iruxos_crystal
-######*/
-
-/* TODO
- * Actually this script is extremely vague, but as long as there is no valid information
- * hidden in some dark places, this will be the best we can do here :(
- * Do not consider this a well proven script.
- */
-
-enum
-{
-    // QUEST_HAND_OF_IRUXOS     = 5381,
-    NPC_IRUXOS                  = 11876,
-};
-
-bool GOUse_go_hand_of_iruxos_crystal(Player* pPlayer, GameObject* pGo)
-{
-    if (Creature* pIruxos = pGo->SummonCreature(NPC_IRUXOS, 0.0f, 0.0f, 0.0f, pPlayer->GetOrientation() + M_PI_F, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 20000))
-        pIruxos->AI()->AttackStart(pPlayer);
-
-    return false;
-}
 
 /*######
 ## go_org_portal
@@ -533,14 +453,10 @@ bool GOUse_go_sw_portal(Player* pPlayer, GameObject* pGo)
     return true;
 }
 
+
 void AddSC_go_scripts()
 {
     Script* pNewScript;
-
-    pNewScript = new Script;
-    pNewScript->Name = "go_cat_figurine";
-    pNewScript->pGOUse =          &GOUse_go_cat_figurine;
-    pNewScript->RegisterSelf();
 
     pNewScript = new Script;
     pNewScript->Name = "go_barov_journal";
@@ -555,11 +471,6 @@ void AddSC_go_scripts()
     pNewScript = new Script;
     pNewScript->Name = "go_ethereum_stasis";
     pNewScript->pGOUse =          &GOUse_go_ethereum_stasis;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "go_gilded_brazier";
-    pNewScript->pGOUse =          &GOUse_go_gilded_brazier;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
@@ -604,11 +515,6 @@ void AddSC_go_scripts()
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
-    pNewScript->Name = "go_blood_filled_orb";
-    pNewScript->pGOUse =          &GOUse_go_blood_filled_orb;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
     pNewScript->Name = "go_andorhal_tower";
     pNewScript->pGOUse =          &GOUse_go_andorhal_tower;
     pNewScript->RegisterSelf();
@@ -621,11 +527,6 @@ void AddSC_go_scripts()
     pNewScript = new Script;
     pNewScript->Name = "go_lab_work_reagents";
     pNewScript->pGOUse =          &GOUse_go_lab_work_reagents;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "go_hand_of_iruxos_crystal";
-    pNewScript->pGOUse =          &GOUse_go_hand_of_iruxos_crystal;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
